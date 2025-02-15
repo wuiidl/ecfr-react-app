@@ -163,6 +163,7 @@ function App() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
+      <Analytics mode={'production'} />
       <Container fluid className="flex-grow-1" style={{paddingBottom: '85px'}}>
         <Row className="justify-content-center align-items-center">
           <Col xs="auto">
@@ -217,7 +218,6 @@ function App() {
         )}
       </Container>
       <Footer />
-      <Analytics />
     </div>
   );
 }
