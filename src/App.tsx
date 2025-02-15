@@ -164,7 +164,7 @@ function App() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Analytics mode={'production'} />
-      <Container fluid className="flex-grow-1" style={{paddingBottom: '85px'}}>
+      <Container fluid className="flex-grow-1" style={{paddingBottom: '85px', paddingTop: '25px'}}>
         <Row className="justify-content-center align-items-center">
           <Col xs="auto">
             <img src="https://imagedelivery.net/Eq3GW7G6_BQgeWvh9nuCig/194f0beb-51d5-4623-64c3-462cbf5a5800/public" alt="ECFR Explorer Logo" className='app-logo' />
