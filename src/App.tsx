@@ -26,6 +26,7 @@ import './App.css';
 import { RecentChange, Agency } from './model';
 import { description, header } from './components/text.props';
 import Footer from './components/Footer';
+import { Analytics } from "@vercel/analytics/react"
 
 ChartJS.register(
   CategoryScale,
@@ -216,6 +217,7 @@ function App() {
         )}
       </Container>
       <Footer />
+      <Analytics />
     </div>
   );
 }
