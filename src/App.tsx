@@ -9,6 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartData,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -35,10 +36,10 @@ ChartJS.register(
 );
 
 function App() {
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<Option[]>([]);
   const [selection, setSelection] = useState<Agency[]>([]);
-  const [chartData, setChartData] = useState({}); // Your chart data here
-  const [recentChanges, setRecentChanges] = useState([]);
+  const [chartData, setChartData] = useState(undefined); // Your chart data here
+  const [recentChanges, setRecentChanges] = useState<RecentChange[]>([]);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
 
   useEffect(() => {
@@ -59,15 +60,13 @@ function App() {
   }, []);
 
 
-  const filterByCallback = (option: Option, props) =>
+  const filterByCallback = (option: Agency, props) =>
     option?.shortName?.toLowerCase().indexOf(props.text.toLowerCase()) !== -1 ||
     option?.name?.toLowerCase().indexOf(props.text.toLowerCase()) !== -1;
 
 
-  const onChange = (opts: Option[]) => {
+  const onChange = (opts: Agency[]) => {
     setSelection(opts);
-    console.log(opts)
-
     axios.get(chartDataApi, {
       ...axiosConfig,
       params: {
@@ -79,13 +78,12 @@ function App() {
     })
       .then((response) => {
         const chart = aggregateByYearMonth(response.data)
-        const data = {
+        const data: ChartData = {
           labels: chart.labels,
           datasets: [
             {
               label: 'Dataset',
               fill: false,
-              lineTension: 0.1,
               backgroundColor: 'rgba(75,192,192,0.4)',
               borderColor: 'rgba(75,192,192,1)',
               borderCapStyle: 'butt',
@@ -114,7 +112,7 @@ function App() {
       params: {
         ...defaultDateRange,
         agency_slugs: [
-          opts[0].slug
+          opts[0].slug,
         ],
         per_page: '5',
         page: '1',
@@ -184,7 +182,7 @@ function App() {
             filterBy={filterByCallback}
             defaultOpen={false}
             labelKey="name"
-            onChange={(opt) => onChange(opt)}
+            onChange={onChange}
             options={suggestions}
             placeholder="Choose an agency ..."
             selected={selection}
