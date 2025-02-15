@@ -20,6 +20,8 @@ import Stack from 'react-bootstrap/Stack';
 import { Option } from 'react-bootstrap-typeahead/types/types';
 import { aggregateByYearMonth } from './data';
 import { RecentChangeItem } from './RecentChangeItem';
+import { Accordion, Card } from 'react-bootstrap';
+import './App.css';
 
 
 export interface Agency {
@@ -33,6 +35,8 @@ export interface RecentChange {
   subtitle: string;
   chapter: string;
   hierarchy: Hierarchy;
+  section: string;
+  link: string;
 }
 
 export interface Hierarchy {
@@ -144,16 +148,19 @@ function App() {
         const { results } = response.data;
         console.log(results);
         const changes: RecentChange[] = results?.map((v) => {
-          const { title, subtitle, chapter } = v.headings;
-          const { part } = v.hierarchy_headings;
+          const { title, subtitle, chapter, part, section } = v.headings;
+          const link = `title-${v.hierarchy.title}/chapter-${v.hierarchy.chapter}`
           return {
             title,
             subtitle,
             chapter,
+            part,
+            section,
+            link,
             hierarchy: {
               title: v.hierarchy_headings.title,
               chapter: v.hierarchy_headings.chapter,
-              part,
+              part: v.hierarchy_headings.part,
             }
           };
         })
@@ -176,39 +183,58 @@ function App() {
   };
 
   return (
-    <Container fluid="lg">
-      <Row className="justify-content-md-center">
-        <Col>
-          <img src="https://imagedelivery.net/Eq3GW7G6_BQgeWvh9nuCig/194f0beb-51d5-4623-64c3-462cbf5a5800/public" alt="ECFR Explorer Logo" className="app-logo" />
+    <Container fluid style={{ padding: '25px' }}>
+      <Row className="justify-content-center align-items-center">
+        <Col xs="auto">
+          <img src="https://imagedelivery.net/Eq3GW7G6_BQgeWvh9nuCig/194f0beb-51d5-4623-64c3-462cbf5a5800/public" alt="ECFR Explorer Logo" className='app-logo' />
         </Col>
       </Row>
-      <Row className="justify-content-md-center">
-        <h1>ECFR Explorer</h1>
+      <Row className="justify-content-center">
+        <Col xs="auto">
+          <h1 className="text-center">ECFR Explorer</h1>
+        </Col>
       </Row>
-      <Row>
-        <Typeahead
-          id="agency-select"
-          filterBy={filterByCallback}
-          defaultOpen={false}
-          labelKey="name"
-          onChange={(opt) => onChange(opt)}
-          options={suggestions}
-          placeholder="Choose an agency ..."
-          selected={selection}
-        />
+      <Row className="justify-content-center">
+        <Col xs={10} md={8} lg={6}>
+          <p className="text-center">Our tool helps you find agencies listed in the ECFR. Once you search for an agency, you can see a monthly summary of regulation changes and check out the five most recent submissions.</p>
+        </Col>
+      </Row>
+      <Row className="justify-content-center" style={{ padding: '25px' }}>
+        <Col xs={10} md={8} lg={6}>
+          <Typeahead
+            id="agency-select"
+            filterBy={filterByCallback}
+            defaultOpen={false}
+            labelKey="name"
+            onChange={(opt) => onChange(opt)}
+            options={suggestions}
+            placeholder="Choose an agency ..."
+            selected={selection}
+          />
+        </Col>
       </Row>
       {isPanelVisible && (
-        <Stack>
-          <Line data={chartData} options={options} />
-          <Row>
-            <h2>5 most recent changes</h2>
-          </Row>
-          <Row>
-            {
-              recentChanges.map((item: RecentChange) => <RecentChangeItem item={item} />)
-            }
-          </Row>
-        </Stack>)}
+        <Row className="justify-content-center" style={{ padding: '25px' }}>
+          <Col xs={10} md={8} lg={6}>
+            <Accordion defaultActiveKey="0">
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Aggregate Chart</Accordion.Header>
+                <Accordion.Body>
+                  <Line data={chartData} options={options} />
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Last 5 submissions</Accordion.Header>
+                <Accordion.Body>
+                  {
+                    recentChanges.map((item: RecentChange) => <RecentChangeItem item={item} />)
+                  }
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }
