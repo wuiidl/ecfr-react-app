@@ -16,11 +16,10 @@ import { agenciesApi, axiosConfig, chartDataApi, defaultDateRange, recentChanges
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Stack from 'react-bootstrap/Stack';
 import { Option } from 'react-bootstrap-typeahead/types/types';
 import { aggregateByYearMonth } from './data';
 import { RecentChangeItem } from './RecentChangeItem';
-import { Accordion, Card } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 import './App.css';
 
 
