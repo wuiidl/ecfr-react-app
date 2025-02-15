@@ -1,21 +1,7 @@
-# React + TypeScript + Vite
+# ECFR Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The service offers a quick and convenient way to explore the ECFR catalog. 
 
-While this project uses React, Vite supports many popular JS frameworks. [See all the supported frameworks](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
-
-## Deploy Your Own
-
-Deploy your own Vite project with Vercel.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/framework-boilerplates/vite-react&template=vite-react)
-
-_Live Example: https://vite-react-example.vercel.app_
-
-### Deploying From Your Terminal
-
-You can deploy your new Vite project with a single command from your terminal using [Vercel CLI](https://vercel.com/download):
-
-```shell
-$ vercel
-```
+1. Search for one of the federal agencies
+2. See the monthly submissions
+3. See the last 5 submissions

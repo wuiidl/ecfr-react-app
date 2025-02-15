@@ -1,8 +1,8 @@
 .app-logo {
-  max-width: 75px; /* Adjust based on your logo's dimensions */
+  max-width: 75px; 
   height: auto;
   display: block;
-  margin: 0 auto 10px; /* Center and add some space below */
+  margin: 0 auto 10px; 
 }
 
 .full-width-row {

@@ -1,7 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import { RecentChange } from "../App";
-
-// /current/title-2/subtitle-A/chapter-I/part-170/subpart-B/section-170.200
+import { RecentChange } from "../model";
 
 export const RecentChangeItem = (props: { item: RecentChange }) => {
 

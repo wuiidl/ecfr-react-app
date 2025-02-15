@@ -24,9 +24,6 @@ import './App.css';
 import { RecentChange, Agency } from './model';
 import { description, header } from './components/text.props';
 
-
-
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
