@@ -1,0 +1,2 @@
+export const description = 'Our tool helps you find agencies listed in the ECFR. Once you search for an agency, you can see a monthly summary of regulation changes and check out the five most recent submissions.';
+export const header = 'ECFR Explorer';

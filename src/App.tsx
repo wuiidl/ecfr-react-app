@@ -12,37 +12,20 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { agenciesApi, axiosConfig, chartDataApi, defaultDateRange, recentChangesApi } from './shared';
+import { agenciesApi, axiosConfig, chartDataApi, defaultDateRange, recentChangesApi } from './settings';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Option } from 'react-bootstrap-typeahead/types/types';
 import { aggregateByYearMonth } from './data';
-import { RecentChangeItem } from './RecentChangeItem';
+import { RecentChangeItem } from './components/RecentChangeItem';
 import { Accordion } from 'react-bootstrap';
 import './App.css';
+import { RecentChange, Agency } from './model';
+import { description, header } from './components/text.props';
 
 
-export interface Agency {
-  name: string;
-  shortName: string;
-  slug: string;
-}
 
-export interface RecentChange {
-  title: string;
-  subtitle: string;
-  chapter: string;
-  hierarchy: Hierarchy;
-  section: string;
-  link: string;
-}
-
-export interface Hierarchy {
-  title: string;
-  chapter: string;
-  part: string;
-}
 
 ChartJS.register(
   CategoryScale,
@@ -60,7 +43,6 @@ function App() {
   const [chartData, setChartData] = useState({}); // Your chart data here
   const [recentChanges, setRecentChanges] = useState([]);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
-  // const [recentChanges, setRecentChanges] = useState([]);
 
   useEffect(() => {
     axios.get(agenciesApi, axiosConfig)
@@ -190,12 +172,12 @@ function App() {
       </Row>
       <Row className="justify-content-center">
         <Col xs="auto">
-          <h1 className="text-center">ECFR Explorer</h1>
+          <h1 className="text-center">{header}</h1>
         </Col>
       </Row>
       <Row className="justify-content-center">
         <Col xs={10} md={8} lg={6}>
-          <p className="text-center">Our tool helps you find agencies listed in the ECFR. Once you search for an agency, you can see a monthly summary of regulation changes and check out the five most recent submissions.</p>
+          <p className="text-center">{description}</p>
         </Col>
       </Row>
       <Row className="justify-content-center" style={{ padding: '25px' }}>
