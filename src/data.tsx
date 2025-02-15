@@ -9,15 +9,15 @@ interface ResultSet {
     data: number[];
 }
 export const aggregateByYearMonth = (data: InputData): ResultSet => {
-    let aggregatedData: { [yearMonth: string]: number } = {};
+    const aggregatedData: { [yearMonth: string]: number } = {};
     // Step 2: Aggregate data by year-month
-    for (let date in data.dates) {
-        let count = data.dates[date];
-        let yearMonth = date.slice(0, 7); // Extracts 'YYYY-MM'
+    for (const date in data.dates) {
+        const count = data.dates[date];
+        const yearMonth = date.slice(0, 7); // Extracts 'YYYY-MM'
         aggregatedData[yearMonth] = (aggregatedData[yearMonth] || 0) + count;
     }
     // Step 3: Sort keys (year-month strings) in ascending order
-    let sortedKeys = Object.keys(aggregatedData).sort((a, b) => {
+    const sortedKeys = Object.keys(aggregatedData).sort((a, b) => {
         // Convert 'YYYY-MM' to Date objects for comparison
         const dateA = new Date(a + '-01'); // '-01' ensures we compare the first day of each month
         const dateB = new Date(b + '-01');

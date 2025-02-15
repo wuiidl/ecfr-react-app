@@ -92,7 +92,7 @@ function App() {
         agency_slugs: [
           opts[0].slug
         ],
-...defaultDateRange
+        ...defaultDateRange
       }
     })
       .then((response) => {
@@ -144,7 +144,7 @@ function App() {
         const { results } = response.data;
         console.log(results);
         const changes: RecentChange[] = results?.map((v) => {
-          const {title, subtitle, chapter } = v.headings;
+          const { title, subtitle, chapter } = v.headings;
           const { part } = v.hierarchy_headings;
           return {
             title,
@@ -194,6 +194,7 @@ function App() {
           onChange={(opt) => onChange(opt)}
           options={suggestions}
           placeholder="Choose an agency ..."
+          selected={selection}
         />
       </Row>
       {isPanelVisible && (
