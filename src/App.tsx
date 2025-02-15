@@ -17,6 +17,7 @@ import { agenciesApi, axiosConfig, chartDataApi, defaultDateRange, recentChanges
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Navbar from 'react-bootstrap/Navbar'
 import { Option } from 'react-bootstrap-typeahead/types/types';
 import { aggregateByYearMonth } from './data';
 import { RecentChangeItem } from './components/RecentChangeItem';
@@ -24,6 +25,7 @@ import { Accordion } from 'react-bootstrap';
 import './App.css';
 import { RecentChange, Agency } from './model';
 import { description, header } from './components/text.props';
+import Footer from './components/Footer';
 
 ChartJS.register(
   CategoryScale,
@@ -159,59 +161,62 @@ function App() {
   };
 
   return (
-    <Container fluid style={{ padding: '25px' }}>
-      <Row className="justify-content-center align-items-center">
-        <Col xs="auto">
-          <img src="https://imagedelivery.net/Eq3GW7G6_BQgeWvh9nuCig/194f0beb-51d5-4623-64c3-462cbf5a5800/public" alt="ECFR Explorer Logo" className='app-logo' />
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs="auto">
-          <h1 className="text-center">{header}</h1>
-        </Col>
-      </Row>
-      <Row className="justify-content-center">
-        <Col xs={10} md={8} lg={6}>
-          <p className="text-center">{description}</p>
-        </Col>
-      </Row>
-      <Row className="justify-content-center" style={{ padding: '25px' }}>
-        <Col xs={10} md={8} lg={6}>
-          <Typeahead
-            id="agency-select"
-            filterBy={filterByCallback}
-            defaultOpen={false}
-            labelKey="name"
-            onChange={onChange}
-            options={suggestions}
-            placeholder="Choose an agency ..."
-            selected={selection}
-          />
-        </Col>
-      </Row>
-      {isPanelVisible && (
-        <Row className="justify-content-center" style={{ padding: '25px' }}>
-          <Col xs={10} md={8} lg={6}>
-            <Accordion defaultActiveKey="0">
-              <Accordion.Item eventKey="0">
-                <Accordion.Header>Aggregate Chart</Accordion.Header>
-                <Accordion.Body>
-                  <Line data={chartData} options={options} />
-                </Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="1">
-                <Accordion.Header>Last 5 submissions</Accordion.Header>
-                <Accordion.Body>
-                  {
-                    recentChanges.map((item: RecentChange) => <RecentChangeItem item={item} />)
-                  }
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
+    <div className="d-flex flex-column min-vh-100">
+      <Container fluid className="flex-grow-1" style={{paddingBottom: '85px'}}>
+        <Row className="justify-content-center align-items-center">
+          <Col xs="auto">
+            <img src="https://imagedelivery.net/Eq3GW7G6_BQgeWvh9nuCig/194f0beb-51d5-4623-64c3-462cbf5a5800/public" alt="ECFR Explorer Logo" className='app-logo' />
           </Col>
         </Row>
-      )}
-    </Container>
+        <Row className="justify-content-center">
+          <Col xs="auto">
+            <h1 className="text-center">{header}</h1>
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          <Col xs={10} md={8} lg={6}>
+            <p className="text-center">{description}</p>
+          </Col>
+        </Row>
+        <Row className="justify-content-center" style={{ padding: '25px' }}>
+          <Col xs={10} md={8} lg={6}>
+            <Typeahead
+              id="agency-select"
+              filterBy={filterByCallback}
+              defaultOpen={false}
+              labelKey="name"
+              onChange={onChange}
+              options={suggestions}
+              placeholder="Choose an agency ..."
+              selected={selection}
+            />
+          </Col>
+        </Row>
+        {isPanelVisible && (
+          <Row className="justify-content-center" style={{ padding: '25px' }}>
+            <Col xs={10} md={8} lg={6}>
+              <Accordion defaultActiveKey="0">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>Aggregate Chart</Accordion.Header>
+                  <Accordion.Body>
+                    <Line data={chartData} options={options} />
+                  </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                  <Accordion.Header>Last 5 submissions</Accordion.Header>
+                  <Accordion.Body>
+                    {
+                      recentChanges.map((item: RecentChange) => <RecentChangeItem item={item} />)
+                    }
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+            </Col>
+          </Row>
+        )}
+      </Container>
+      <Footer />
+    </div>
   );
 }
 
