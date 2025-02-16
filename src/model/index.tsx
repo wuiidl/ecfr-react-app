@@ -5,6 +5,7 @@ export interface Agency {
 }
 
 export interface RecentChange {
+    key: string;
     title: string;
     subtitle: string;
     chapter: string;

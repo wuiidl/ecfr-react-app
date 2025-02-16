@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { agenciesApi, axiosConfig, chartDataApi, defaultDateRange, recentChangesApi } from './settings';
+import { agenciesApi, chartDataApi, configureAxios, defaultDateRange, recentChangesApi } from './settings';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -46,7 +46,10 @@ function App() {
   const [isPanelVisible, setIsPanelVisible] = useState(false);
 
   useEffect(() => {
-    axios.get(agenciesApi, axiosConfig)
+
+    configureAxios();
+
+    axios.get(agenciesApi)
       .then(response => {
         const { agencies } = response.data;
         const ags = agencies.map((value: { name: string, slug: string, short_name: string }) => {
@@ -71,7 +74,6 @@ function App() {
   const onChange = (opts: Agency[]) => {
     setSelection(opts);
     axios.get(chartDataApi, {
-      ...axiosConfig,
       params: {
         agency_slugs: [
           opts[0].slug
@@ -111,7 +113,6 @@ function App() {
       });
 
     axios.get(recentChangesApi, {
-      ...axiosConfig,
       params: {
         ...defaultDateRange,
         agency_slugs: [
@@ -127,9 +128,11 @@ function App() {
         const { results } = response.data;
         console.log(results);
         const changes: RecentChange[] = results?.map((v) => {
+          const { structure_index } = v;
           const { title, subtitle, chapter, part, section } = v.headings;
           const link = `title-${v.hierarchy.title}/chapter-${v.hierarchy.chapter}`
           return {
+            key: structure_index,
             title,
             subtitle,
             chapter,
@@ -208,7 +211,7 @@ function App() {
                   <Accordion.Header>Last 5 submissions</Accordion.Header>
                   <Accordion.Body>
                     {
-                      recentChanges.map((item: RecentChange) => <RecentChangeItem item={item} />)
+                      recentChanges.map((item: RecentChange) => <RecentChangeItem key={'k_' + item.key} item={item} />)
                     }
                   </Accordion.Body>
                 </Accordion.Item>

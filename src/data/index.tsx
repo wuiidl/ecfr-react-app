@@ -1,3 +1,5 @@
+import axios, { Axios } from "axios";
+
 interface DateCounts {
     [date: string]: number;
 }
