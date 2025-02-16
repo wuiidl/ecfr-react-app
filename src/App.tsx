@@ -167,7 +167,7 @@ function App() {
       <Container fluid className="flex-grow-1" style={{paddingBottom: '85px', paddingTop: '25px'}}>
         <Row className="justify-content-center align-items-center">
           <Col xs="auto">
-            <img src="./public/eagle-2.png" alt="ECFR Explorer Logo" className='app-logo' />
+            <img src="./assets/eagle-2.png" alt="ECFR Explorer Logo" className='app-logo' />
           </Col>
         </Row>
         <Row className="justify-content-center">
