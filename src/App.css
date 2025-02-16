@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 .app-logo {
-  max-width: 75px; 
-  height: auto;
+  width: 300px; 
+  height: 300px;
   display: block;
   margin: 0 auto 10px; 
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .full-width-row {
