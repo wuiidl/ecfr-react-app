@@ -126,7 +126,6 @@ function App() {
     })
       .then(response => {
         const { results } = response.data;
-        console.log(results);
         const changes: RecentChange[] = results?.map((v) => {
           const { structure_index } = v;
           const { title, subtitle, chapter, part, section } = v.headings;
