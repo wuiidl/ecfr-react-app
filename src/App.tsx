@@ -17,7 +17,6 @@ import { agenciesApi, chartDataApi, configureAxios, defaultDateRange, recentChan
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Navbar from 'react-bootstrap/Navbar'
 import { Option } from 'react-bootstrap-typeahead/types/types';
 import { aggregateByYearMonth } from './data';
 import { RecentChangeItem } from './components/RecentChangeItem';
@@ -27,6 +26,7 @@ import { RecentChange, Agency } from './model';
 import { description, header } from './components/text.props';
 import Footer from './components/Footer';
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 ChartJS.register(
   CategoryScale,
@@ -79,7 +79,7 @@ console.error('Error fetching agencies:', error)
     setSelection(opts);
     axios.get(chartDataApi, {
       params: {
-        'agency_slugs': opts[0].slug,
+        'agency_slugs[]': opts[0].slug,
         ...defaultDateRange
       }
     })
@@ -117,7 +117,7 @@ console.error('Error fetching agencies:', error)
     axios.get(recentChangesApi, {
       params: {
         ...defaultDateRange,
-        'agency_slugs': opts[0].slug,
+        'agency_slugs[]': opts[0].slug,
         per_page: '5',
         page: '1',
         order: 'newest_first',
@@ -166,6 +166,7 @@ console.error('Error fetching agencies:', error)
   return (
     <div className="d-flex flex-column min-vh-100">
       <Analytics mode={'production'} />
+      <SpeedInsights />
       <Container fluid className="flex-grow-1" style={{paddingBottom: '85px', paddingTop: '25px'}}>
         <Row className="justify-content-center align-items-center">
           <Col xs="auto">
