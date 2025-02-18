@@ -17,7 +17,6 @@ import { agenciesApi, chartDataApi, configureAxios, defaultDateRange, recentChan
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Navbar from 'react-bootstrap/Navbar'
 import { Option } from 'react-bootstrap-typeahead/types/types';
 import { aggregateByYearMonth } from './data';
 import { RecentChangeItem } from './components/RecentChangeItem';
@@ -62,7 +61,7 @@ function App() {
         })
         setSuggestions(ags);
       })
-      .catch(error => console.error('Error fetching agencies:', error));
+      .catch(error => { console.error('Error fetching agencies:', error)});
   }, []);
 
 
@@ -75,9 +74,7 @@ function App() {
     setSelection(opts);
     axios.get(chartDataApi, {
       params: {
-        agency_slugs: [
-          opts[0].slug
-        ],
+        'agency_slugs[]': opts[0].slug,
         ...defaultDateRange
       }
     })
@@ -115,9 +112,7 @@ function App() {
     axios.get(recentChangesApi, {
       params: {
         ...defaultDateRange,
-        agency_slugs: [
-          opts[0].slug,
-        ],
+        'agency_slugs[]': opts[0].slug,
         per_page: '5',
         page: '1',
         order: 'newest_first',
@@ -126,7 +121,6 @@ function App() {
     })
       .then(response => {
         const { results } = response.data;
-        console.log(results);
         const changes: RecentChange[] = results?.map((v) => {
           const { structure_index } = v;
           const { title, subtitle, chapter, part, section } = v.headings;
