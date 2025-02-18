@@ -26,7 +26,6 @@ import { RecentChange, Agency } from './model';
 import { description, header } from './components/text.props';
 import Footer from './components/Footer';
 import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
 ChartJS.register(
   CategoryScale,
@@ -166,7 +165,6 @@ console.error('Error fetching agencies:', error)
   return (
     <div className="d-flex flex-column min-vh-100">
       <Analytics mode={'production'} />
-      <SpeedInsights />
       <Container fluid className="flex-grow-1" style={{paddingBottom: '85px', paddingTop: '25px'}}>
         <Row className="justify-content-center align-items-center">
           <Col xs="auto">
