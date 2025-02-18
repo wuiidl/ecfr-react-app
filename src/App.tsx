@@ -61,11 +61,7 @@ function App() {
         })
         setSuggestions(ags);
       })
-      .catch(error => {
-console.log(error);
-console.error('Error fetching agencies:', error)
-
-});
+      .catch(error => { console.error('Error fetching agencies:', error)});
   }, []);
 
 

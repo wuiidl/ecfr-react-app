@@ -43,27 +43,29 @@ export const configureAxios = () => {
     axios.defaults.baseURL = baseUrl;
     axios.defaults.headers.get.Accept = 'application/json'
     axios.defaults.headers.get["Content-Type"] = 'application/x-www-form-urlencoded';
-    axios.defaults.transformRequest = [customRequestTransformer];
-    axios.interceptors.response.use(
-        response => response, // For successful responses, do nothing special
-        error => {
-            if (error.response) {
-                // Only apply our transformer to responses that have a status code (i.e., server responded)
-                error.response.data = errorDebugResponseTransformer(
-                    error.response.data,
-                    error.response.headers,
-                    error.response.status
-                );
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.log('Error: No response received');
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error:', error.message);
+    if (import.meta.env.PROD !== false) {
+        axios.defaults.transformRequest = [customRequestTransformer];
+        axios.interceptors.response.use(
+            response => response, // For successful responses, do nothing special
+            error => {
+                if (error.response) {
+                    // Only apply our transformer to responses that have a status code (i.e., server responded)
+                    error.response.data = errorDebugResponseTransformer(
+                        error.response.data,
+                        error.response.headers,
+                        error.response.status
+                    );
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log('Error: No response received');
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error:', error.message);
+                }
+                return Promise.reject(error);
             }
-            return Promise.reject(error);
-        }
-    );
+        );
+    }
 }
 
 export const defaultDateRange = {
