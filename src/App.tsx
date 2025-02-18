@@ -79,9 +79,7 @@ console.error('Error fetching agencies:', error)
     setSelection(opts);
     axios.get(chartDataApi, {
       params: {
-        agency_slugs: [
-          opts[0].slug
-        ],
+        'agency_slugs': opts[0].slug,
         ...defaultDateRange
       }
     })
@@ -119,9 +117,7 @@ console.error('Error fetching agencies:', error)
     axios.get(recentChangesApi, {
       params: {
         ...defaultDateRange,
-        agency_slugs: [
-          opts[0].slug,
-        ],
+        'agency_slugs': opts[0].slug,
         per_page: '5',
         page: '1',
         order: 'newest_first',
