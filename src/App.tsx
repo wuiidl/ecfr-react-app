@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,6 +25,7 @@ import { RecentChange, Agency } from './model';
 import { description, header } from './components/text.props';
 import Footer from './components/Footer';
 import { Analytics } from "@vercel/analytics/react"
+import ky from 'ky';
 
 ChartJS.register(
   CategoryScale,
@@ -46,11 +46,9 @@ function App() {
 
   useEffect(() => {
 
-    configureAxios();
-
-    axios.get(agenciesApi)
+    ky.get(agenciesApi).json()
       .then(response => {
-        const { agencies } = response.data;
+        const { agencies } = response;
         const ags = agencies.map((value: { name: string, slug: string, short_name: string }) => {
           const { name, slug, short_name } = value;
           return {
@@ -61,7 +59,7 @@ function App() {
         })
         setSuggestions(ags);
       })
-      .catch(error => { console.error('Error fetching agencies:', error)});
+      .catch(error => { console.error('Error fetching agencies:', error) });
   }, []);
 
 
@@ -72,14 +70,14 @@ function App() {
 
   const onChange = (opts: Agency[]) => {
     setSelection(opts);
-    axios.get(chartDataApi, {
-      params: {
-        'agency_slugs[]': opts[0].slug,
-        ...defaultDateRange
-      }
-    })
+
+    const params = {
+      'agency_slugs[]': opts[0].slug,
+      ...defaultDateRange
+    };
+    ky.get(chartDataApi, { searchParams: params }).json()
       .then((response) => {
-        const chart = aggregateByYearMonth(response.data)
+        const chart = aggregateByYearMonth(response)
         const data: ChartData = {
           labels: chart.labels,
           datasets: [
@@ -109,18 +107,18 @@ function App() {
         setIsPanelVisible(true);
       });
 
-    axios.get(recentChangesApi, {
-      params: {
-        ...defaultDateRange,
-        'agency_slugs[]': opts[0].slug,
-        per_page: '5',
-        page: '1',
-        order: 'newest_first',
-        paginate_by: 'results'
-      }
-    })
+
+    const queryParams = {
+      ...defaultDateRange,
+      'agency_slugs[]': opts[0].slug,
+      per_page: '5',
+      page: '1',
+      order: 'newest_first',
+      paginate_by: 'results'
+    };
+    ky.get(recentChangesApi, { searchParams: queryParams }).json()
       .then(response => {
-        const { results } = response.data;
+        const { results } = response;
         const changes: RecentChange[] = results?.map((v) => {
           const { structure_index } = v;
           const { title, subtitle, chapter, part, section } = v.headings;
@@ -161,7 +159,7 @@ function App() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Analytics mode={'production'} />
-      <Container fluid className="flex-grow-1" style={{paddingBottom: '85px', paddingTop: '25px'}}>
+      <Container fluid className="flex-grow-1" style={{ paddingBottom: '85px', paddingTop: '25px' }}>
         <Row className="justify-content-center align-items-center">
           <Col xs="auto">
             <img src="./eagle-2.png" alt="ECFR Explorer Logo" className='app-logo' />

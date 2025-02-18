@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const baseUrl = 'https://www.ecfr.gov';
-export const agenciesApi = '/api/admin/v1/agencies.json';
-export const chartDataApi = '/api/search/v1/counts/daily';
-export const recentChangesApi = '/api/search/v1/results';
+export const agenciesApi = baseUrl + '/api/admin/v1/agencies.json';
+export const chartDataApi = baseUrl + '/api/search/v1/counts/daily';
+export const recentChangesApi = baseUrl + '/api/search/v1/results';
 
 const customRequestTransformer = (data, headers) => {
     if (data) console.log(data);
