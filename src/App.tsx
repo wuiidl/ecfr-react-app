@@ -12,7 +12,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import { agenciesApi, chartDataApi, configureAxios, defaultDateRange, recentChangesApi } from './settings';
+import { agenciesApi, chartDataApi, defaultDateRange, recentChangesApi } from './settings';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -21,11 +21,12 @@ import { aggregateByYearMonth } from './data';
 import { RecentChangeItem } from './components/RecentChangeItem';
 import { Accordion } from 'react-bootstrap';
 import './App.css';
-import { RecentChange, Agency } from './model';
+import { RecentChange, Agency, InputData, SearchResults } from './model';
 import { description, header } from './components/text.props';
 import Footer from './components/Footer';
 import { Analytics } from "@vercel/analytics/react"
 import ky from 'ky';
+import { AgenciesResponse } from './data/api';
 
 ChartJS.register(
   CategoryScale,
@@ -46,8 +47,8 @@ function App() {
 
   useEffect(() => {
 
-    ky.get(agenciesApi).json()
-      .then(response => {
+    ky.get(agenciesApi).json<AgenciesResponse>()
+      .then((response) => {
         const { agencies } = response;
         const ags = agencies.map((value: { name: string, slug: string, short_name: string }) => {
           const { name, slug, short_name } = value;
@@ -75,7 +76,7 @@ function App() {
       'agency_slugs[]': opts[0].slug,
       ...defaultDateRange
     };
-    ky.get(chartDataApi, { searchParams: params }).json()
+    ky.get(chartDataApi, { searchParams: params }).json<InputData>()
       .then((response) => {
         const chart = aggregateByYearMonth(response)
         const data: ChartData = {
@@ -116,7 +117,8 @@ function App() {
       order: 'newest_first',
       paginate_by: 'results'
     };
-    ky.get(recentChangesApi, { searchParams: queryParams }).json()
+
+  ky.get(recentChangesApi, { searchParams: queryParams }).json<SearchResults>()
       .then(response => {
         const { results } = response;
         const changes: RecentChange[] = results?.map((v) => {
@@ -124,7 +126,7 @@ function App() {
           const { title, subtitle, chapter, part, section } = v.headings;
           const link = `title-${v.hierarchy.title}/chapter-${v.hierarchy.chapter}`
           return {
-            key: structure_index,
+            key: `${structure_index}`,
             title,
             subtitle,
             chapter,
@@ -140,7 +142,6 @@ function App() {
         })
         setRecentChanges(changes)
       });
-
   }
 
   const options = {

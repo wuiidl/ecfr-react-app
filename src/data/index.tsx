@@ -1,11 +1,6 @@
-import axios, { Axios } from "axios";
+import { InputData } from "../model";
 
-interface DateCounts {
-    [date: string]: number;
-}
-interface InputData {
-    dates: DateCounts;
-}
+
 interface ResultSet {
     labels: string[];
     data: number[];
