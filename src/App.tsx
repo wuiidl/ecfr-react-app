@@ -118,7 +118,7 @@ function App() {
       paginate_by: 'results'
     };
 
-  ky.get(recentChangesApi, { searchParams: queryParams }).json<SearchResults>()
+    ky.get(recentChangesApi, { searchParams: queryParams }).json<SearchResults>()
       .then(response => {
         const { results } = response;
         const changes: RecentChange[] = results?.map((v) => {
@@ -163,7 +163,9 @@ function App() {
       <Container fluid className="flex-grow-1" style={{ paddingBottom: '85px', paddingTop: '25px' }}>
         <Row className="justify-content-center align-items-center">
           <Col xs="auto">
-            <img src="./eagle-2.png" alt="ECFR Explorer Logo" className='app-logo' />
+            <a href='https://ecfr-react-app.vercel.app/'>
+              <img src="./eagle-2.png" alt="ECFR Explorer Logo" className='app-logo' />
+            </a>
           </Col>
         </Row>
         <Row className="justify-content-center">
